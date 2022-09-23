@@ -9,6 +9,15 @@ const tourRoute = require("./routes/tour.route");
 app.use(cors);
 app.use(express.json());
 
+mongoose.connect(
+    `mongodb+srv://${process.env.USER_ID}:${process.env.PASSWORD}@cluster0.up3hj.mongodb.net/test`,
+    {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    }
+);
+
 // FOR ALL TOUR API
 app.use("/api/tour", tourRoute);
 
