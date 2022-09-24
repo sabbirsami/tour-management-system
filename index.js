@@ -4,19 +4,22 @@ require("dotenv").config();
 const cors = require("cors");
 const port = process.env.PORT || 5000;
 const tourRoute = require("./routes/tour.route");
+const { default: mongoose } = require("mongoose");
 
 // MIDDLEWARE
 app.use(cors);
 app.use(express.json());
 
-mongoose.connect(
-    `mongodb+srv://${process.env.USER_ID}:${process.env.PASSWORD}@cluster0.up3hj.mongodb.net/test`,
-    {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
-    }
-);
+mongoose
+    .connect(
+        `mongodb+srv://${process.env.USER_ID}:${process.env.PASSWORD}@cluster0.up3hj.mongodb.net/?retryWrites=true&w=majority`,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
+    .then(() => console.log(" Database connection successful "))
+    .catch((err) => console.log(err));
 
 // FOR ALL TOUR API
 app.use("/api/tour", tourRoute);

@@ -1,5 +1,3 @@
-const { getDb } = require("../utils/dbConnect");
-
 exports.getAllTour = async (req, res, next) => {
     try {
         const filters = { ...req.body };
