@@ -1,3 +1,6 @@
+const express = require("express");
+const Tour = require("../models/Tour");
+
 exports.getAllTour = async (req, res, next) => {
     try {
         const filters = { ...req.body };
@@ -42,6 +45,31 @@ exports.addNewTour = async (req, res, next) => {
             success: true,
             message: `Tour added with id: ${result.insertedId}`,
         });
+    } catch (error) {
+        res.status(400).json({
+            status: "Fail",
+            error: error.message,
+        });
+    }
+};
+
+exports.getATour = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                error: "Not a valid tour place id",
+            });
+        }
+        const tour = await Tour.find({ _id: id });
+        if (!tour) {
+            return res.status(400).json({
+                success: false,
+                error: "Couldn't find a tour place with this id",
+            });
+        }
+        res.status(200).json({ success: true, data: tour });
     } catch (error) {
         res.status(400).json({
             status: "Fail",
