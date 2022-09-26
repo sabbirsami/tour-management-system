@@ -27,3 +27,25 @@ exports.getAllTour = async (req, res, next) => {
         });
     }
 };
+
+exports.addNewTour = async (req, res, next) => {
+    try {
+        const newTour = req.body;
+        const result = await Tour.insertOne(newTour);
+        console.log(result);
+        if (!result.insertedId) {
+            return res
+                .status(400)
+                .send({ status: false, error: "Something went wrong!" });
+        }
+        res.send({
+            success: true,
+            message: `Tour added with id: ${result.insertedId}`,
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: "Fail",
+            error: error.message,
+        });
+    }
+};
