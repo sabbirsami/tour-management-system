@@ -77,3 +77,29 @@ exports.getATour = async (req, res, next) => {
         });
     }
 };
+
+exports.updateATour = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                error: "Not a valid tour place id",
+            });
+        }
+        const result = await Tour.updateOne(
+            { _id: id },
+            { $set: req.body },
+            { runValidators: true }
+        );
+        res.status(200).json({
+            success: true,
+            message: "Successfully updated the tour",
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: "Fail",
+            error: error.message,
+        });
+    }
+};
